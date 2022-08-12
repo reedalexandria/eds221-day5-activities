@@ -1,0 +1,36 @@
+---
+title: "Task 1"
+author: "Alex Reed"
+date: "2022-08-12"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(here)
+```
+
+```{r}
+source(here::here("src", "storm_runoff.R"))
+
+predict_runoff(I = 2, A = 5)
+
+I_vec <- seq(from = 0.6,  to = 0.8, by = 0.01)
+runoff_vec <- predict_runoff(I = I_vec, A = 182)
+
+runoff_df <- data.frame(I_vec, runoff_vec)
+
+ggplot(data = runoff_df, aes(x = I_vec, y = runoff_vec)) +
+  geom_point() +
+  geom_line() +
+  labs(title = "Watershed Imperviousness vs. Amount of Runoff",
+       x = "Imperviousness", 
+       y = "Runoff Values (cubic feet)")
+
+ggsave(here("figs", "watershed.png"),
+       width = 6,
+       height = 5)
+
+```
+
